@@ -32,7 +32,7 @@
 def longest_word(matrix, words)
   max_word_size = words.max.length
   starting_point = [0, 0]   # initial coordinates
-  starting_word = matrix[0][0]       # starting point
+  starting_word = ""
 
   potential_words = []
   enumerate_words(starting_point, starting_word, matrix, potential_words, max_word_size)
@@ -48,25 +48,19 @@ def longest_word(matrix, words)
 end
 
 def enumerate_words(point, potential_word, chars_matrix, potential_words, max_word_size)
-  return if potential_word.length > max_word_size
+  # get all possible next_points from point
+  # get the character at the current point a
+  # for each next_point get all possible next_points
+  # when you can no longer continue, return the character
+  # at that point.
+  return if potential_word.size >= max_word_size
+  firstpoint = possible_moves_from_point(point, 0, 2)[0]
+  r, c = point[0], point[1]
+
+  potential_word += chars_matrix[r][c]
 
   potential_words << potential_word
-
-  # find all valid possible moves from current point
-  next_moves = possible_moves_from_point(point, 0, chars_matrix.size - 1)
-
-  # iterate through each move
-  i = 0
-  while i < next_moves.length do
-    move = next_moves[i]
-    r, c = move[0], move[1]
-    puts "---"
-    puts "[#{r}], [#{c}]"
-    potential_word = potential_word + chars_matrix[r][c]
-    enumerate_words(move, potential_word, chars_matrix, potential_words, max_word_size)
-
-    i += 1
-  end
+  return potential_word + enumerate_words(firstpoint, potential_word, chars_matrix, potential_words, max_word_size)
 end
 
 def possible_moves_from_point(point, min=0, max=7)
