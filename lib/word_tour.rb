@@ -55,7 +55,7 @@ class WordTour
   end
 
   def traverse(knight)
-    if knight.word.size < @max_word.size
+    if knight.word.size < @max_word.size && knight.word_worthwhile?
       next_positions = knight.find_next_positions
       next_positions.each do |next_position|
         traverse(knight.dup.traverse_to(next_position))
@@ -63,3 +63,8 @@ class WordTour
     end
   end
 end
+
+# Note: implementing the knight.word_worthwhile? heuristic saves a ridiculous
+# amount of time even for a tiny grid. Below is a comparison of the two runtimes...
+# With:    Finished in 0.09665 seconds (files took 0.20392 seconds to load)
+# Without: Finished in 34.65 seconds (files took 0.19661 seconds to load)

@@ -28,6 +28,20 @@ class WordKnight
     positions.reject { |pos| !is_safe?(pos[0], pos[1]) }
   end
 
+  def word_worthwhile?
+    @word
+    # check every valid word, see if @word is a subset of any of them
+    # if it is, it's worth continuing because it might be the longest word
+    worthwhile_flag = false
+    @valid_words.each do |valid_word|
+      if valid_word.include?(@word)
+        worthwhile_flag = true
+        break
+      end
+    end
+    return worthwhile_flag
+  end
+
   private
 
   def position_after_step(from, step)

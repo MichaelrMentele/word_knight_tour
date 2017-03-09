@@ -25,9 +25,9 @@ describe WordTour do
 
   describe "#find_candidates_at!" do
     it "should return all the word permutations up to the length of the passed in max word" do
-      max_word = ["123"]
+      max_word = ["afg"]
       tour = WordTour.new(simple_grid, max_word) #"[a, ah, af, afg, afa, ahc, aha]"
-      expect(tour.find_candidates_at!([0,0]).length).to eq(7)
+      expect(tour.find_candidates_at!([0,0]).length).to eq(5)
     end
   end
 
@@ -41,7 +41,7 @@ describe WordTour do
     it "should return the candidates for every starting point on the grid" do
       max_word = ["123"]
       tour = WordTour.new(simple_grid, max_word) # [a, b, c, d, e, f, g, h, i]
-      expect(tour.all_candidates!.length).to eq(57) # the center point has no moves
+      expect(tour.all_candidates!.length).to eq(9) # the center point has no moves
     end
 
     it "generates the right words" do
