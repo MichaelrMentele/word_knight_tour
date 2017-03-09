@@ -16,7 +16,13 @@ describe WordKnight do
   end
 
   describe "#traverse_to" do
-
+    it "addes the new char sequence to the candidate word list" do
+      candidates = []
+      knight = WordKnight.new(simple_board, [0,0], candidates)
+      knight.traverse_to([2,1])
+      expect(candidates[0]).to eq("Q")
+      expect(candidates[1]).to eq("QK")
+    end
   end
 
   describe "#find_next_positions" do

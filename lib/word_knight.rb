@@ -4,11 +4,12 @@ class WordKnight
     [ 2, -1], [ 1, -2], [-1, -2], [-2, -1]
   ]
 
-  attr_reader :board, :steps_taken
+  attr_reader :board, :steps_taken, :word
 
-  def initialize(board, start_at, candidate_list)
+  def initialize(board, start_at, candidate_list, valid_words)
     @board = board
-    @candidate_list_ref = [] # passed in array reference
+    @candidate_list = candidate_list # passed in array reference
+    @valid_words = valid_words
     @word = ""
     traverse_to(start_at)
   end
@@ -16,7 +17,7 @@ class WordKnight
   def traverse_to(new_position)
     @current_position = new_position
     @word += @board[@current_position[0]][@current_position[1]]
-    @candidate_list_ref << @word
+    @candidate_list << @word
     self
   end
 

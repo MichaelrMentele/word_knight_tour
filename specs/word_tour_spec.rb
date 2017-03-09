@@ -2,7 +2,7 @@ require_relative "../lib/word_tour"
 require 'rspec'
 
 describe WordTour do
-  let(:simple_grid) do
+  let!(:simple_grid) do
     [
       ["a","b","c"],
       ["d","e","f"],
@@ -10,31 +10,53 @@ describe WordTour do
     ]
   end
 
-  it "should return the appropriate number of word permutations for a given max_word_size" do
-    words = []
-    max_word_size = 3
-    enumerate_words([0,0], "", simple_grid, words, max_word_size)
-    #"[a, ah, af, afg, afa, ahc, aha]"
-    puts words
-    expect(words.size).to eq(7)
-  end
-end
-
-describe "finding the longest word" do
-  let(:matrix) do
+  let!(:board) do
     [
-      "QWERTYNUI".split(""),
-      "OPAADFGH".split(""),
-      "TKLZXCVB".split(""),
-      "NMRWFRTY".split(""),
-      "UIOPASDF".split(""),
-      "GHJOLZXC".split(""),
-      "VBNMQWER".split(""),
-      "TYUIOPAS".split("")
+      "QWERTNUI".downcase.split(""),
+      "OPAADFGH".downcase.split(""),
+      "TKLZXCVB".downcase.split(""),
+      "NMRWFRTY".downcase.split(""),
+      "UIOPASDF".downcase.split(""),
+      "GHJOLZXC".downcase.split(""),
+      "VBNMQWER".downcase.split(""),
+      "TYUIOPAS".downcase.split("")
     ]
   end
-  it "should find the longest word moving like a knight in a grid of letters" do
-    words = ["algol", "fortran", "simula"]
-    expect(longest_word(matrix, words)).to eq("fortran")
+
+  describe "#find_candidates_at!" do
+    it "should return all the word permutations up to the length of the passed in max word" do
+      max_word = ["123"]
+      tour = WordTour.new(simple_grid, max_word) #"[a, ah, af, afg, afa, ahc, aha]"
+      expect(tour.find_candidates_at!([0,0]).length).to eq(7)
+    end
+  end
+
+  describe "#all_candidates!" do
+    it "should return the candidates for every starting point on the grid" do
+      max_word = ["1"]
+      tour = WordTour.new(simple_grid, max_word) # [a, b, c, d, e, f, g, h, i]
+      expect(tour.all_candidates!.length).to eq(9)
+    end
+
+    it "should return the candidates for every starting point on the grid" do
+      max_word = ["123"]
+      tour = WordTour.new(simple_grid, max_word) # [a, b, c, d, e, f, g, h, i]
+      expect(tour.all_candidates!.length).to eq(57) # the center point has no moves
+    end
+
+    it "generates the right words" do
+      words = ["algol", "fortran", "simula"]
+      tour = WordTour.new(board, words)
+      candidates = tour.all_candidates!
+      expect(candidates.include?("fortran")).to eq(true)
+    end
+  end
+
+  describe "#longest_word" do
+    it "should find the longest word moving like a knight in a grid of letters" do
+      words = ["algol", "fortran", "simula"]
+      tour = WordTour.new(board, words)
+      expect(tour.longest_word!).to eq("fortran")
+    end
   end
 end

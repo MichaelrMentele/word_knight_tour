@@ -23,5 +23,3 @@ class ShakespeareScraper
     @doc.css("blockquote a").map(&:text)
   end
 end
-
-require 'pry'; binding.pry

@@ -1,52 +1,64 @@
-#################################
-# Clarification of Requirements #
-#################################
-
-# Output the longest word from words that can be found in the matrix
-# following these rules:
-# => From a starting point, select a valid position in the grid moving
-# => in the same way a knight in chess would ie. from any i, j position
-# => move to i +- 1 AND j +- 2 OR i +- 2 AND j +- 1. You can move
-# => without limit and allowing the same grid position to be reused!
-
-############
-# Approach #
-############
-
-# We are going to need to search the list of words often to eliminate
-# possibilities. It would be worth the initial O(n) cost to sort the
-# list in some way.
+require_relative 'word_knight'
 
 ###############
 # Brute Force #
 ###############
-# We can enumerate all possible moves from any given point but we
-# need to be careful not to get stuck in an infinite loop. As we
-# test every branch, we delete those that have more characters
-# then the longest word, or even better, when they no longer match
-# any words. Since every point has 8 possibilities we have O(8^n)
-# time complexity.
+# We enumerate all possible moves from any given point. The most
+# intuitive approach is dynamic programming, since every point has 8
+# possibilities we have O(8^n) time complexity.
 
-# My hunch is we want to use some form of dynamic programming, or
-# recursion with memoization.
+##########
+# Future #
+##########
+# We can optimize the enumeration of possible moves with a simple
+# heuristic, if the moves so far, don't correspond to any valid word,
+# then we can stop early and stop recursing through the tree of
+# possible word permutations. Since, we'd be doing many lookups in that case, we
+# would want to sort the list of words. The big O is still 8*n (worst case) but
+# the average runtime would be much faster.
+
 class WordTour
-
-  def intialize(matrix)
+  def initialize(matrix, words)
     @board = matrix # assumes square matrix
     @start_point = [0,0]
     @candidate_list = []
+    @words = words
+    @max_word = words.max_by(&:length)
   end
 
-  def solve
-    traverse(WordKnight.new(@board, @start_point, @candidate_list))
-    return @list
+  def longest_word!
+    all_candidates!
+    valid_list.max
+  end
+
+  def all_candidates!
+    for i in 0...@board.length do
+      for j in 0...@board[0].length do
+        find_candidates_at!([i, j])
+      end
+    end
+    return @candidate_list
+  end
+
+  def find_candidates_at!(point)
+    # mutates candidate_list
+    traverse(WordKnight.new(@board, point, @candidate_list, @words))
+    return @candidate_list
+  end
+
+  private
+
+  def valid_list
+    @candidate_list.select do |candidate|
+      @words.include?(candidate)
+    end
   end
 
   def traverse(knight)
-    unless knight.word.size > max_word.size
+    if knight.word.size < @max_word.size
       next_positions = knight.find_next_positions
       next_positions.each do |next_position|
-        traverse(knight.traverse_to(next_position))
+        traverse(knight.dup.traverse_to(next_position))
       end
     end
   end
