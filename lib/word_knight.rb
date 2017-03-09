@@ -29,6 +29,13 @@ class WordKnight
   end
 
   def word_worthwhile?
+    ##########
+    # Future #
+    ##########
+    # We can improve the speed of the program by improving the speed of this search.
+    # For words of length m, we perform m * number_of_permutations. Therefore,
+    # we want to reduce this method from O(m) to O(log(n)). We can do this by sorting
+    # the list and the using binary search.
     @word
     # check every valid word, see if @word is a subset of any of them
     # if it is, it's worth continuing because it might be the longest word

@@ -14,7 +14,7 @@ board = [
 puts "Scraping Shakespeare text and generating word list..."
 words = ShakespeareScraper.new.generate_word_list
 require 'pry'; binding.pry
-puts "Finding all possible word combinations..."
+puts "Finding all valid possible words..."
 puts WordTour.new(board, words).longest_word!
 
 #################################

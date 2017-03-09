@@ -7,15 +7,13 @@ require_relative 'word_knight'
 # intuitive approach is dynamic programming, since every point has 8
 # possibilities we have O(8^n) time complexity.
 
-##########
-# Future #
-##########
+#########################
+# Performance heuristic #
+#########################
 # We can optimize the enumeration of possible moves with a simple
 # heuristic, if the moves so far, don't correspond to any valid word,
 # then we can stop early and stop recursing through the tree of
-# possible word permutations. Since, we'd be doing many lookups in that case, we
-# would want to sort the list of words. The big O is still 8*n (worst case) but
-# the average runtime would be much faster.
+# possible word permutations. 
 
 class WordTour
   def initialize(matrix, words)
