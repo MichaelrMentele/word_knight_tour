@@ -1,22 +1,7 @@
-require_relative "../lib/longest_word"
+require_relative "../lib/word_tour"
 require 'rspec'
 
-# Unit Tests
-describe "#possible_moves_from_point" do
-  it "should count the appropriate number of moves in a corner" do
-    expect(possible_moves_from_point([0, 0]).length).to eq(2)
-  end
-
-  it "should count the appropriate number of moves from an edge" do
-    expect(possible_moves_from_point([0, 2]).length).to eq(4)
-  end
-
-  it "should count the appropriate number of moves from the middle" do
-    expect(possible_moves_from_point([4,4]).length).to eq(8)
-  end
-end
-
-describe "#enumerate_words" do
+describe WordTour do
   let(:simple_grid) do
     [
       ["a","b","c"],
