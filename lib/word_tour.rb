@@ -13,7 +13,7 @@ require_relative 'word_knight'
 # We can optimize the enumeration of possible moves with a simple
 # heuristic, if the moves so far, don't correspond to any valid word,
 # then we can stop early and stop recursing through the tree of
-# possible word permutations. 
+# possible word permutations.
 
 class WordTour
   def initialize(matrix, words)
@@ -26,7 +26,7 @@ class WordTour
 
   def longest_word!
     all_candidates!
-    valid_list.max
+    valid_list.max_by(&:length)
   end
 
   def all_candidates!

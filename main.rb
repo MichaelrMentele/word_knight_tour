@@ -14,7 +14,9 @@ board = [
 puts "Scraping Shakespeare text and generating word list..."
 words = ShakespeareScraper.new.generate_word_list
 puts "Finding all valid possible words..."
-puts WordTour.new(board, words).longest_word!
+tour = WordTour.new(board, words)
+puts "The longest valid word is #{tour.longest_word!}."
+puts "#{tour.candidate_list.length} words explored."
 
 #################################
 # Clarification of Requirements #
